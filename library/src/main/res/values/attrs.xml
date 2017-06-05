@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="material_help_lightActionBar" format="boolean"/>
+    <attr name="material_help_sub_header_background" format="color"/>
 </resources>

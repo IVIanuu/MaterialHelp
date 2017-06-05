@@ -1,7 +1,22 @@
+/*
+ * Copyright 2017 Manuel Wrage
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ivianuu.materialhelp.adapter;
 
 import android.graphics.PorterDuff;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -11,12 +26,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivianuu.materialhelp.ColorHelper;
-import com.ivianuu.materialhelp.MaterialHelpActivity;
 import com.ivianuu.materialhelp.R;
 import com.ivianuu.materialhelp.adapter.holder.MaterialHelpItemViewHolder;
 import com.ivianuu.materialhelp.adapter.holder.MaterialHelpSubHeaderViewHolder;
 import com.ivianuu.materialhelp.adapter.holder.MaterialHelpViewHolder;
-
 import com.ivianuu.materialhelp.interfaces.MaterialHelpViewTypes;
 import com.ivianuu.materialhelp.model.MaterialHelpItem;
 import com.ivianuu.materialhelp.model.MaterialHelpList;
@@ -29,28 +42,29 @@ import com.ivianuu.stickyheaders.StickyHeaders;
 
 public class MaterialHelpAdapter extends RecyclerView.Adapter<MaterialHelpViewHolder> implements StickyHeaders, StickyHeaders.ViewSetup {
 
-    private AppCompatActivity mActivity;
-    private MaterialHelpList mMaterialHelpList;
+    private AppCompatActivity activity;
+    private MaterialHelpList materialHelpList;
 
-    private int mExpandedPosition = RecyclerView.NO_POSITION;
+    private int expandedPosition = RecyclerView.NO_POSITION;
 
-    private final int mAccentColor;
-    private final int mPrimaryTextColor;
+    private final int accentColor;
+    private final int primaryTextColor;
 
-    private final float mStuckHeaderElevation;
+    private final float stuckHeaderElevation;
 
     public MaterialHelpAdapter(AppCompatActivity activity, MaterialHelpList materialHelpList) {
-        mActivity = activity;
-        mMaterialHelpList = materialHelpList;
+        this.activity = activity;
+        this.materialHelpList = materialHelpList;
 
-        mAccentColor = ColorHelper.getAccentColor(mActivity);
-        mPrimaryTextColor = ColorHelper.getPrimaryTextColor(mActivity);
+        accentColor = ColorHelper.getAccentColor(activity);
+        primaryTextColor = ColorHelper.getPrimaryTextColor(activity);
 
-        mStuckHeaderElevation = mActivity.getResources().getDimensionPixelSize(R.dimen.cardview_default_elevation);
+        stuckHeaderElevation = activity.getResources().getDimensionPixelSize(R.dimen.cardview_default_elevation);
     }
 
     public void swapMaterialHelpList(@NonNull MaterialHelpList materialHelpList) {
-        mMaterialHelpList = materialHelpList;
+        this.materialHelpList = materialHelpList;
+        expandedPosition = RecyclerView.NO_POSITION;
         notifyDataSetChanged();
     }
 
@@ -67,7 +81,7 @@ public class MaterialHelpAdapter extends RecyclerView.Adapter<MaterialHelpViewHo
     }
 
     private View inflateView(int resourceId, ViewGroup parent) {
-        return LayoutInflater.from(mActivity).inflate(resourceId, parent, false);
+        return LayoutInflater.from(activity).inflate(resourceId, parent, false);
     }
 
     @Override
@@ -75,26 +89,26 @@ public class MaterialHelpAdapter extends RecyclerView.Adapter<MaterialHelpViewHo
         switch (holder.getItemViewType()) {
             case MaterialHelpViewTypes.SUB_HEADER:
                 MaterialHelpSubHeaderViewHolder subHeaderViewHolder = (MaterialHelpSubHeaderViewHolder) holder;
-                MaterialHelpSubHeader materialHelpSubHeader = (MaterialHelpSubHeader) mMaterialHelpList.getItems().get(position);
+                MaterialHelpSubHeader materialHelpSubHeader = (MaterialHelpSubHeader) materialHelpList.getItems().get(position);
 
                 String headerTitle;
                 if (materialHelpSubHeader.getTitle() != null) {
                     headerTitle = materialHelpSubHeader.getTitle();
                 } else {
-                    headerTitle = mActivity.getString(materialHelpSubHeader.getTitleRes());
+                    headerTitle = activity.getString(materialHelpSubHeader.getTitleRes());
                 }
 
                 subHeaderViewHolder.subHeaderTitle.setText(headerTitle.toUpperCase());
                 break;
             case MaterialHelpViewTypes.ITEM:
-                MaterialHelpItemViewHolder itemViewHolder = (MaterialHelpItemViewHolder) holder;
-                MaterialHelpItem materialHelpItem = (MaterialHelpItem) mMaterialHelpList.getItems().get(position);
+                final MaterialHelpItemViewHolder itemViewHolder = (MaterialHelpItemViewHolder) holder;
+                final MaterialHelpItem materialHelpItem = (MaterialHelpItem) materialHelpList.getItems().get(position);
 
                 String itemTitle;
                 if (materialHelpItem.getTitle() != null) {
                     itemTitle = materialHelpItem.getTitle();
                 } else {
-                    itemTitle = mActivity.getString(materialHelpItem.getTitleRes());
+                    itemTitle = activity.getString(materialHelpItem.getTitleRes());
                 }
 
                 itemViewHolder.title.setText(itemTitle);
@@ -103,7 +117,7 @@ public class MaterialHelpAdapter extends RecyclerView.Adapter<MaterialHelpViewHo
                 if (materialHelpItem.getExpandedText() != null) {
                     expandedText = materialHelpItem.getExpandedText();
                 } else {
-                    expandedText = mActivity.getString(materialHelpItem.getExpandedTextRes());
+                    expandedText = activity.getString(materialHelpItem.getExpandedTextRes());
                 }
 
                 itemViewHolder.expandedText.setText(expandedText);
@@ -114,32 +128,31 @@ public class MaterialHelpAdapter extends RecyclerView.Adapter<MaterialHelpViewHo
                 itemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mExpandedPosition == holder.getAdapterPosition()) {
-                            // this item is expanded so collapse it
-                            mExpandedPosition = RecyclerView.NO_POSITION;
+                        if(expandedPosition == holder.getAdapterPosition()) {
+                            // collapse this item
+                            expandedPosition = RecyclerView.NO_POSITION;
                             notifyItemChanged(holder.getAdapterPosition());
                         } else {
-                            int oldExpandedPosition = mExpandedPosition;
+                            int oldExpandedPosition = expandedPosition;
 
                             // expand this item
-                            mExpandedPosition = holder.getAdapterPosition();
-                            notifyItemChanged(mExpandedPosition);
+                            expandedPosition = holder.getAdapterPosition();
+                            notifyItemChanged(expandedPosition);
 
-                            // collapse old expanded item
-                            if (oldExpandedPosition != RecyclerView.NO_POSITION)
+                            // collapse last expanded item
+                            if(oldExpandedPosition != -1)
                                 notifyItemChanged(oldExpandedPosition);
                         }
                     }
                 });
 
-                boolean expanded = isExpanded(holder);
+                boolean expanded = expandedPosition == holder.getAdapterPosition();
 
                 // show expanded text
                 itemViewHolder.expandedText.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
-
                 // set title and arrow color
-                int titleAndArrowColor = expanded ? mAccentColor : mPrimaryTextColor;
+                int titleAndArrowColor = expanded ? accentColor : primaryTextColor;
 
                 itemViewHolder.title.setTextColor(titleAndArrowColor);
                 itemViewHolder.expandArrow.getDrawable().setColorFilter(titleAndArrowColor, PorterDuff.Mode.SRC_IN);
@@ -154,10 +167,6 @@ public class MaterialHelpAdapter extends RecyclerView.Adapter<MaterialHelpViewHo
         }
     }
 
-    private boolean isExpanded(RecyclerView.ViewHolder holder) {
-        return holder.getAdapterPosition() == mExpandedPosition;
-    }
-
     private boolean isNextItemHeader(RecyclerView.ViewHolder holder) {
         return !isLastItem(holder) && getItemViewType(holder.getAdapterPosition() + 1) == MaterialHelpViewTypes.SUB_HEADER;
     }
@@ -168,12 +177,17 @@ public class MaterialHelpAdapter extends RecyclerView.Adapter<MaterialHelpViewHo
 
     @Override
     public int getItemViewType(int position) {
-        return mMaterialHelpList.getItems().get(position).getType();
+        return materialHelpList.getItems().get(position).getType();
     }
 
     @Override
     public int getItemCount() {
-        return mMaterialHelpList != null ? mMaterialHelpList.getItems().size() : 0;
+        return materialHelpList != null ? materialHelpList.getItems().size() : 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return materialHelpList.getItems().get(position).hashCode();
     }
 
     @Override
@@ -183,7 +197,7 @@ public class MaterialHelpAdapter extends RecyclerView.Adapter<MaterialHelpViewHo
 
     @Override
     public void setupStickyHeaderView(View view) {
-        ((CardView) view).setCardElevation(mStuckHeaderElevation);
+        ((CardView) view).setCardElevation(stuckHeaderElevation);
     }
 
     @Override

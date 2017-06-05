@@ -20,6 +20,9 @@
         <activity android:name=".HelpActivity"
                   android:theme="@style/HelpTheme"/>
 
+        <activity android:name=".HelpActivity2"
+                  android:theme="@style/HelpTheme2"/>
+
     </application>
 
 </manifest>

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2017 Manuel Wrage
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ivianuu.materialhelp;
 
 import android.content.Context;
@@ -6,19 +22,16 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.MenuItem;
 
 import com.ivianuu.materialhelp.adapter.MaterialHelpAdapter;
-
 import com.ivianuu.materialhelp.model.MaterialHelpList;
 import com.ivianuu.stickyheaders.StickyHeadersLinearLayoutManager;
 
@@ -26,20 +39,23 @@ import com.ivianuu.stickyheaders.StickyHeadersLinearLayoutManager;
  * Author IVIanuu.
  */
 
+// TODO: 16.05.2017 searchable, fragment
+
 public abstract class MaterialHelpActivity extends AppCompatActivity {
 
-    private Toolbar mToolbar;
-    private RecyclerView mRecyclerView;
+    private Toolbar toolbar;
+    private RecyclerView helpList;
 
-    private MaterialHelpAdapter mMaterialHelpAdapter;
+    private MaterialHelpAdapter helpAdapter;
 
-    private MaterialHelpList mMaterialHelpList = new MaterialHelpList.Builder().build();
+    private MaterialHelpList materialHelpList = new MaterialHelpList.Builder().build();
 
-    private ListTask mListTask;
+    private ListTask listTask;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         verifyAttributesExist();
 
         setContentView(R.layout.activity_material_help);
@@ -48,18 +64,19 @@ public abstract class MaterialHelpActivity extends AppCompatActivity {
         initRecyclerView();
 
         // Get material list
-        mListTask = new ListTask(this);
-        mListTask.execute();
+        listTask = new ListTask(this);
+        listTask.execute();
     }
 
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         String title = getActivityTitle();
 
         if (title == null) title = getString(R.string.material_help_title);
 
+        //noinspection ConstantConditions
         getSupportActionBar().setTitle(title);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -68,23 +85,25 @@ public abstract class MaterialHelpActivity extends AppCompatActivity {
         TypedArray lightTheme = theme.obtainStyledAttributes(new int[]{R.attr.material_help_lightActionBar});
 
         if (lightTheme.getBoolean(0, true)) {
-            mToolbar.setTitleTextColor(Color.BLACK);
-            mToolbar.getNavigationIcon().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
+            toolbar.setTitleTextColor(Color.BLACK);
+            //noinspection ConstantConditions
+            toolbar.getNavigationIcon().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
         } else {
-            mToolbar.setTitleTextColor(Color.WHITE);
-            mToolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+            toolbar.setTitleTextColor(Color.WHITE);
+            //noinspection ConstantConditions
+            toolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
         }
     }
 
     private void initRecyclerView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new StickyHeadersLinearLayoutManager<MaterialHelpAdapter>(this));
+        helpList = (RecyclerView) findViewById(R.id.help_list);
+        helpList.setLayoutManager(new StickyHeadersLinearLayoutManager<MaterialHelpAdapter>(this));
 
-        mMaterialHelpAdapter = new MaterialHelpAdapter(this, mMaterialHelpList);
-        mRecyclerView.setAdapter(mMaterialHelpAdapter);
+        helpAdapter = new MaterialHelpAdapter(this, materialHelpList);
+        helpList.setAdapter(helpAdapter);
 
         // disable default animations
-        mRecyclerView.setItemAnimator(null);
+        helpList.setItemAnimator(null);
     }
 
     private void verifyAttributesExist() {
@@ -106,18 +125,18 @@ public abstract class MaterialHelpActivity extends AppCompatActivity {
     }
 
     protected void setMaterialHelpList(MaterialHelpList materialHelpList) {
-        mMaterialHelpList = materialHelpList;
-        mMaterialHelpAdapter.swapMaterialHelpList(mMaterialHelpList);
+        this.materialHelpList = materialHelpList;
+        helpAdapter.swapMaterialHelpList(materialHelpList);
     }
 
     protected void refreshMaterialAboutList() {
-        mMaterialHelpAdapter.notifyDataSetChanged();
+        helpAdapter.notifyDataSetChanged();
     }
 
     protected void setScrollToolbar(boolean scrollToolbar) {
-        if (mToolbar != null) {
+        if (toolbar != null) {
             AppBarLayout.LayoutParams params =
-                    (AppBarLayout.LayoutParams) mToolbar.getLayoutParams();
+                    (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
             if (scrollToolbar) {
                 params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
                         | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
@@ -143,7 +162,7 @@ public abstract class MaterialHelpActivity extends AppCompatActivity {
         super.onDestroy();
 
         // stop list task
-        mListTask.cancel(true);
+        listTask.cancel(true);
     }
 
     protected abstract MaterialHelpList getMaterialHelpList(Context context);
@@ -174,4 +193,5 @@ public abstract class MaterialHelpActivity extends AppCompatActivity {
             context = null;
         }
     }
+
 }

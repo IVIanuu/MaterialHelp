@@ -1,6 +1,8 @@
 package com.ivianuu.materialhelp.sample;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import com.ivianuu.materialhelp.MaterialHelpActivity;
 import com.ivianuu.materialhelp.model.MaterialHelpItem;
@@ -14,8 +16,43 @@ import com.ivianuu.materialhelp.model.MaterialHelpSubHeader;
 public class HelpActivity extends MaterialHelpActivity {
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setScrollToolbar(true);
+    }
+
+    @Override
     protected MaterialHelpList getMaterialHelpList(Context context) {
         MaterialHelpList.Builder helpListBuilder = new MaterialHelpList.Builder();
+
+        MaterialHelpSubHeader helpHeader = new MaterialHelpSubHeader.Builder()
+                .withTitle("Fragen und Antworten")
+                .build();
+        helpListBuilder.addItem(helpHeader);
+
+        MaterialHelpItem mamasFrage = new MaterialHelpItem.Builder()
+                .withTitle("Wann essen wir heute")
+                .withExpandedText("Du kannst jetzt essen machen gehen")
+                .build();
+        helpListBuilder.addItem(mamasFrage);
+
+        MaterialHelpSubHeader animalHeader = new MaterialHelpSubHeader.Builder()
+                .withTitle("Animals")
+                .build();
+        helpListBuilder.addItem(animalHeader);
+
+        MaterialHelpItem dogItem = new MaterialHelpItem.Builder()
+                .withTitle("Dog")
+                .withExpandedText("Has 4 feet")
+                .build();
+        helpListBuilder.addItem(dogItem);
+
+        MaterialHelpItem catItem = new MaterialHelpItem.Builder()
+                .withTitle("Cat")
+                .withExpandedText("Hallo Mama das ist eine Katze")
+                .build();
+        helpListBuilder.addItem(catItem);
 
         MaterialHelpSubHeader drinkSubHeader = new MaterialHelpSubHeader.Builder()
                 .withTitle("Drinks")

@@ -3,24 +3,36 @@
 
     <style name="Theme.material_help.Light.DarkActionBar" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="material_help_lightActionBar">false</item>
+        <item name="material_help_sub_header_background">#f6f6f6</item>
+
+        <!-- Disable Action Bar -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.material_help.Light.LightActionBar" parent="Base.Theme.AppCompat.Light">
         <item name="material_help_lightActionBar">true</item>
+        <item name="material_help_sub_header_background">#f6f6f6</item>
+
+        <!-- Disable Action Bar -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.material_help.Dark.DarkActionBar" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.material_help.Dark.DarkActionBar" parent="Base.ThemeOverlay.AppCompat.Dark">
         <item name="material_help_lightActionBar">false</item>
+        <item name="material_help_sub_header_background">#f6f6f6</item>
+
+        <!-- Disable Action Bar -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.material_help.Dark.LightActionBar" parent="Base.ThemeOverlay.AppCompat.Dark">
         <item name="material_help_lightActionBar">true</item>
+        <item name="material_help_sub_header_background">#f6f6f6</item>
+
+        <!-- Disable Action Bar -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

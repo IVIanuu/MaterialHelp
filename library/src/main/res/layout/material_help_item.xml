@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:layout_toStartOf="@+id/expand_arrow"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
             android:fontFamily="sans-serif-medium"
-            android:text="TITLE"/>
+            tools:text="This is a title"/>
 
         <ImageView
             android:id="@+id/expand_arrow"
@@ -31,7 +31,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
             android:src="@drawable/ic_arrow_down"
-            android:tint="?android:textColorSecondary"/>
+            android:tint="?android:textColorSecondary" />
 
     </RelativeLayout>
 
@@ -43,7 +43,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <View
         android:id="@+id/separator"
