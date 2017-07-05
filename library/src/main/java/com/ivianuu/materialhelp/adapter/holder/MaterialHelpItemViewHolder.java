@@ -22,6 +22,11 @@ import android.widget.TextView;
 
 import com.ivianuu.materialhelp.R;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Author IVIanuu.
  */
@@ -36,10 +41,10 @@ public class MaterialHelpItemViewHolder extends MaterialHelpViewHolder {
     public MaterialHelpItemViewHolder(View itemView) {
         super(itemView);
 
-        title = (TextView) itemView.findViewById(R.id.title);
-        expandArrow = (ImageView) itemView.findViewById(R.id.expand_arrow);
-        expandedText = (TextView) itemView.findViewById(R.id.expanded_text);
+        title = itemView.findViewById(R.id.title);
+        expandArrow = itemView.findViewById(R.id.expand_arrow);
+        expandedText = itemView.findViewById(R.id.expanded_text);
         separator = itemView.findViewById(R.id.separator);
-
     }
+
 }

@@ -33,7 +33,7 @@ import android.view.MenuItem;
 
 import com.ivianuu.materialhelp.adapter.MaterialHelpAdapter;
 import com.ivianuu.materialhelp.model.MaterialHelpList;
-import com.ivianuu.stickyheaders.StickyHeadersLinearLayoutManager;
+import com.ivianuu.recyclerviewhelpers.stickyheaders.StickyHeadersLinearLayoutManager;
 
 /**
  * Author IVIanuu.

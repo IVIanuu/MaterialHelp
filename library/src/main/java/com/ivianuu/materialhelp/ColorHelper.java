@@ -23,7 +23,7 @@ import android.content.res.TypedArray;
  * Author IVIanuu.
  */
 
-public class ColorHelper {
+public final class ColorHelper {
 
     public static int getPrimaryColor(Context context) {
         return resolveColor(context, R.attr.colorPrimary);

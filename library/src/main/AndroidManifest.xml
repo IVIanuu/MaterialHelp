@@ -1,7 +1,1 @@
-<manifest
-    package="com.ivianuu.materialhelp">
-
-    <!-- Required -->
-    <application />
-
-</manifest>
+<manifest package="com.ivianuu.materialhelp"/>

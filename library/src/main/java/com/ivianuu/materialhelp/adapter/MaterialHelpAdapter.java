@@ -34,7 +34,7 @@ import com.ivianuu.materialhelp.interfaces.MaterialHelpViewTypes;
 import com.ivianuu.materialhelp.model.MaterialHelpItem;
 import com.ivianuu.materialhelp.model.MaterialHelpList;
 import com.ivianuu.materialhelp.model.MaterialHelpSubHeader;
-import com.ivianuu.stickyheaders.StickyHeaders;
+import com.ivianuu.recyclerviewhelpers.stickyheaders.StickyHeaders;
 
 /**
  * Author IVIanuu.

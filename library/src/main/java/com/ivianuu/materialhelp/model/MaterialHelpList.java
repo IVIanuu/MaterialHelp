@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author IVIanuu.
+ * Holds and manages items
  */
 
-public class MaterialHelpList {
+public final class MaterialHelpList {
 
     private List<MaterialHelpInterface> items = new ArrayList<>();
 
